@@ -1,0 +1,33 @@
+{
+  "name": "registry-npmjs-proxy",
+  "version": "1.0.0",
+  "description": "Proxy for the npm registry. Can be used for registry balancing and/or local (partial) replication",
+  "keywords": [
+    "npm",
+    "registry",
+    "repository",
+    "proxy",
+    "balancing",
+    "replication"
+  ],
+  "homepage": "http://smile-sa.github.io/registry-npmjs-proxy",
+  "bugs": {
+    "url": "https://github.com/Smile-SA/registry-npmjs-proxy/issues"
+  },
+  "license": "Apache 2",
+  "author": {
+    "name": "Maxime Robert",
+    "email": "marob@smile.fr"
+  },
+  "repository": {
+    "type" : "git",
+    "url": "http://github.com/Smile-SA/registry-npmjs-proxy.git"
+  },
+  "dependencies": {
+    "request": "2.27.0",
+    "log4js": "0.6.9",
+    "http-proxy": "0.10.3"
+  },
+  "devDependencies": {},
+  "engine": "node >= 0.8.0"
+}

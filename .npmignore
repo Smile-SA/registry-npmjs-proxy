@@ -1,0 +1,10 @@
+.idea
+npm-debug.log
+
+logs
+
+*.tgz
+
+npmjs.org
+resources
+config.js

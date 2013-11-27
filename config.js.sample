@@ -1,0 +1,31 @@
+var config = {
+  // Url used for rewriting tarball urls. Should match the url of the proxy
+  proxyUrl: "http://localhost:1337/",
+
+  // Configuration of the local-hosted registry (optional)
+  /*local: {
+    url: "http://registry.intranet:5984/registry/_design/scratch/_rewrite/",
+    couchDbRegistry: "http://login:password@registry.intranet:5984/registry/",
+    replicate: "http://login:password@registry.intranet:5984/_replicate/"
+  },*/
+
+  // Configuration of central registries (a list of mirrors can be provided)
+  central: [
+    {
+      id: "central",
+      url: "http://registry.npmjs.org/",
+      couchDbRegistry: "http://isaacs.iriscouch.com/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: true
+    },
+    {
+      id: "europe",
+      url: "http://registry.npmjs.eu/",
+      couchDbRegistry: "http://176.9.4.195/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: false
+    }
+  ]
+}
+
+module.exports = config;
