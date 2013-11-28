@@ -34,7 +34,7 @@ If you combine this mode with the registry balancing mode, you can even continue
 
 ![Architecture diagram](/resources/architecture.png)
 
-## Prerequisites
+## Prerequisites (optional)
 
 To use this proxy with a local replication, you need a functional Couchdb (v1.3.1) installation.
 
@@ -46,8 +46,10 @@ initCouchDbRegistry.sh http://[login]:[password]@[registryUrl]/registry
 
 ## Install
 
+First, clone the repo. Then:
+
 ```sh
-npm install registry-npmjs-proxy
+npm install
 ```
 
 ## Configure
@@ -55,7 +57,7 @@ npm install registry-npmjs-proxy
    * Copy the "config.js.sample" file as "config.js"
    * Edit the "config.js" configuration file to fit your needs:
      * Configure the "proxyUrl" to match your proxy listening url
-     * Uncomment (if used) and configure the "local" section with your Couchdb installation
+     * Uncomment and configure (if used) the "local" section with your Couchdb installation
      * Add / remove "central" registries (default configuration should be ok)
 
 ## Run
@@ -71,6 +73,103 @@ On the npm user computer, configure npm to use your proxy:
 ```sh
 npm set registry "[proxyUrl]"
 ```
+
+## Configuration examples
+
+### Balancing with 2 "central" registries
+
+```javascript
+var config = {
+  // Url used for rewriting tarball urls. Should match the url of the proxy
+  proxyUrl: "http://localhost:1337/",
+
+  // Configuration of central registries (a list of mirrors can be provided)
+  central: [
+    {
+      id: "central",
+      url: "http://registry.npmjs.org/",
+      couchDbRegistry: "http://isaacs.iriscouch.com/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: true
+    },
+    {
+      id: "europe",
+      url: "http://registry.npmjs.eu/",
+      couchDbRegistry: "http://176.9.4.195/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: false
+    }
+  ]
+}
+
+module.exports = config;
+```
+
+### Local registry plus official registry
+
+```javascript
+var config = {
+  // Url used for rewriting tarball urls. Should match the url of the proxy
+  proxyUrl: "http://localhost:1337/",
+
+  // Configuration of the local-hosted registry (optional)
+  local: {
+    url: "http://registry.intranet:5984/registry/_design/scratch/_rewrite/",
+    couchDbRegistry: "http://login:password@registry.intranet:5984/registry/",
+    replicate: "http://login:password@registry.intranet:5984/_replicate/"
+  },
+
+  // Configuration of central registries (a list of mirrors can be provided)
+  central: [
+    {
+      id: "central",
+      url: "http://registry.npmjs.org/",
+      couchDbRegistry: "http://isaacs.iriscouch.com/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: true
+    }
+  ]
+}
+
+module.exports = config;
+```
+
+### Local registry plus multiple "central" registries
+
+```javascript
+var config = {
+  // Url used for rewriting tarball urls. Should match the url of the proxy
+  proxyUrl: "http://localhost:1337/",
+
+  // Configuration of the local-hosted registry (optional)
+  local: {
+    url: "http://registry.intranet:5984/registry/_design/scratch/_rewrite/",
+    couchDbRegistry: "http://login:password@registry.intranet:5984/registry/",
+    replicate: "http://login:password@registry.intranet:5984/_replicate/"
+  },
+
+  // Configuration of central registries (a list of mirrors can be provided)
+  central: [
+    {
+      id: "central",
+      url: "http://registry.npmjs.org/",
+      couchDbRegistry: "http://isaacs.iriscouch.com/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: true
+    },
+    {
+      id: "europe",
+      url: "http://registry.npmjs.eu/",
+      couchDbRegistry: "http://176.9.4.195/registry/",
+      // The first registry with replicateFrom=true is used as replication source
+      replicateFrom: false
+    }
+  ]
+}
+
+module.exports = config;
+```
+
 
 ## Future improvements
 
