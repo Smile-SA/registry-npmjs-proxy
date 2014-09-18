@@ -1,3 +1,7 @@
+# Deprecation
+
+**This project is deprecated (mainly because of recent npm registry architecture modifications) and has been replaced by https://github.com/Smile-SA/npmjs-enterprise**
+
 # registry-npmjs-proxy
 
 Proxy for the npm registry. Can be used for registry balancing and/or local (partial) replication
